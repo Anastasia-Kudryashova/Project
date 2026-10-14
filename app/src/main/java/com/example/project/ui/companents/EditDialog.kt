@@ -26,8 +26,8 @@ fun EditDialog(
     onUpdate:(Task) -> Unit,
     updatedTask: Task
 ){
-    var title by remember { mutableStateOf("") }
-    var text by remember { mutableStateOf("") }
+    var title by remember { mutableStateOf(updatedTask.title) }
+    var text by remember { mutableStateOf(updatedTask.text) }
 
     Dialog(
         onDismissRequest = onDismiss
@@ -72,14 +72,15 @@ fun EditDialog(
                         Text("Отмена")
                     }
                     TextButton(onClick = {
-                       // if (title.isNotBlank() and text.isNotBlank())
-                       //     onUpdate(
-                       //         Task(
-                       //             id = updatedTask.id,
-                       //             text = text,
-                       //             title = title
-                       //         )
-                       //     )
+                        if (title.isNotBlank() and text.isNotBlank())
+                            onUpdate(
+                                Task(
+                                    id = updatedTask.id,
+                                    text = text,
+                                    title = title,
+                                    expended = updatedTask.expended
+                                )
+                            )
                     }) {
                         Text("Добавить")
                     }

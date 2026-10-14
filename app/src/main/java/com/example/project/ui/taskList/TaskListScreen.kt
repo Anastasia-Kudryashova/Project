@@ -1,5 +1,10 @@
 package com.example.project.ui.taskList
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -57,8 +62,11 @@ fun TaskListScreen(viewModel: TaskListViewModel) {
                     modifier = Modifier
                         .padding(10.dp)
                         .fillMaxWidth(),
-                    elevation = CardDefaults.cardElevation(defaultElevation = 12.dp)
-                    //
+                    elevation = CardDefaults.cardElevation(defaultElevation = 12.dp),
+                    onClick = {
+                        viewModel.switchExpend(it)
+                    }
+
                 ) {
                     Column(modifier = Modifier.padding(10.dp)) {
                         Box(modifier = Modifier.fillMaxWidth()) {
@@ -91,6 +99,19 @@ fun TaskListScreen(viewModel: TaskListViewModel) {
                                 }
                             }
                         }
+                        AnimatedVisibility(
+                            visible = it.expended,
+                            enter = fadeIn() + expandVertically(),
+                            exit = fadeOut() + shrinkVertically()
+                        ) {
+                            Text(
+                                modifier = Modifier
+                                    .padding(10.dp)
+                                    .fillMaxWidth(),
+                                text = it.text
+                            )
+                        }
+
                     }
                 }
             }
@@ -119,7 +140,8 @@ fun TaskListScreen(viewModel: TaskListViewModel) {
                 val newTask = Task(
                     id = 0,
                     title = title,
-                    text = text
+                    text = text,
+                    expended = false
                 )
                 viewModel.addTask(newTask)
             }

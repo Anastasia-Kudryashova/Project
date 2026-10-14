@@ -6,6 +6,7 @@ import com.example.project.data.models.Task
 import com.example.project.data.repository.TaskRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class TaskListViewModel(
@@ -28,6 +29,16 @@ class TaskListViewModel(
 
     init {
         loadTask()
+    }
+
+    fun switchExpend(switchedTask: Task) {
+        _tasks.update { tasks ->
+            tasks.map {
+                if (it.id == switchedTask.id)
+                    it.copy(expended = !it.expended)
+                else it
+            }
+        }
     }
 
     //загрузка

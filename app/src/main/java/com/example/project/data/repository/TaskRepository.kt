@@ -12,12 +12,14 @@ class TaskRepository {
                 Task(
                     id = currentId++,
                     title = "Заголовок 1",
-                    text = "Очень много текста".repeat(20)
+                    text = "Очень много текста".repeat(20),
+                    expended = false
                 ),
                 Task(
                     id = currentId++,
                     title = "Заголовок 2",
-                    text = "Очень много текста".repeat(20)
+                    text = "Очень много текста".repeat(20),
+                    expended = true
                 ),
 
             )
