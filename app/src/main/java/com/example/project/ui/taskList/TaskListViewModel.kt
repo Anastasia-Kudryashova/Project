@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class TaskListViewModel(
-    private val repository : TaskRepository = TaskRepository()
+    private val repository: TaskRepository = TaskRepository()
 ) : ViewModel() {
     private val _tasks = MutableStateFlow<List<Task>>(emptyList())
     val tasks : StateFlow<List<Task>> = _tasks

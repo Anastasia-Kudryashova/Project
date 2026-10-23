@@ -30,22 +30,23 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.project.data.models.Task
 import com.example.project.ui.companents.AddDialog
 import com.example.project.ui.companents.DeleteDialog
 import com.example.project.ui.companents.EditDialog
 
 @Composable
-fun TaskListScreen(viewModel: TaskListViewModel) {
+fun TaskListScreen(
+    navController: NavController,
+    viewModel: TaskListViewModel
+) {
     val tasks by viewModel.tasks.collectAsState()
-    val task by viewModel.task.collectAsState()
-    val showAddDialog by viewModel.showAddDialog.collectAsState()
     val showDeleteDialog by viewModel.showDeleteDialog.collectAsState()
-    val showUpdateDialog by viewModel.showUpdateDialog.collectAsState()
 
     Scaffold(
         floatingActionButton = {
-            FloatingActionButton(onClick = { viewModel.showAddDialog() }) {
+            FloatingActionButton(onClick = { navController.navigate("TaskAdd") }) {
                 Icon(Icons.Default.Add, contentDescription = "Add")
             }
         }
@@ -91,8 +92,7 @@ fun TaskListScreen(viewModel: TaskListViewModel) {
                                 }
                                 IconButton(
                                     onClick = {
-                                        viewModel.showUpdateDialog()
-                                        viewModel.SelectTask(it)
+                                        navController.navigate("TaskEdit/${it.id}")
                                     }
                                 ) {
                                     Icon(Icons.Filled.Edit, contentDescription = "Edit")
@@ -122,29 +122,6 @@ fun TaskListScreen(viewModel: TaskListViewModel) {
         DeleteDialog(
             { viewModel.hideDeleteDialog() },
             { viewModel.deleteTask() }
-        )
-    }
-    if (showUpdateDialog) {
-        EditDialog(
-            { viewModel.hideUpdateDialog() },
-            { updateTask ->
-                viewModel.updateTask(updateTask)
-            },
-            task!!
-        )
-    }
-    if (showAddDialog) {
-        AddDialog(
-            { viewModel.showAddDialog() },
-            { title, text ->
-                val newTask = Task(
-                    id = 0,
-                    title = title,
-                    text = text,
-                    expended = false
-                )
-                viewModel.addTask(newTask)
-            }
         )
     }
 }
