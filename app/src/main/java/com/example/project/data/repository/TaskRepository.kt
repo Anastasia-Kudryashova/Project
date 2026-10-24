@@ -1,48 +1,42 @@
 package com.example.project.data.repository
 
 import com.example.project.data.models.Task
+import com.example.project.data.netWork.SupadaseClient.client
+import io.github.jan.supabase.postgrest.from
 
 class TaskRepository {
-    private var tasks = mutableListOf<Task>()
-    private var currentId = 1
-
-    init {
-        tasks.addAll(
-            listOf(
-                Task(
-                    id = currentId++,
-                    title = "Заголовок 1",
-                    text = "Очень много текста".repeat(20),
-                    expended = false
-                ),
-                Task(
-                    id = currentId++,
-                    title = "Заголовок 2",
-                    text = "Очень много текста".repeat(20),
-                    expended = true
-                ),
-
-            )
-        )
+    suspend fun getTask(taskId: Int) : Task? {
+        val task = client.from("Task").select {
+            filter {
+                gte("Id", taskId)
+            }
+        }.decodeSingle<Task>()
+        return task
     }
 
-    fun getTask(taskId: Int) : Task?{
-        return tasks.find { it.id == taskId }
+    suspend fun getAllTasks() : List<Task> {
+        val tasks = client.from("Task").select().decodeList<Task>()
+        return tasks
+
     }
 
-    fun getAllTasks() : List<Task> = tasks.toList()
-
-    fun addTask(task: Task){
-        tasks.add(task.copy(id = currentId++))
+    suspend fun addTask(task: Task){
+        client.from("Task").insert(task)
     }
 
-    fun deleteTask(id: Int){
-        tasks.removeAll { it.id == id}
+    suspend fun deleteTask(id: Int){
+        client.from("Task").delete{
+            filter {
+                gte("Id", id)
+            }
+        }
     }
 
-    fun updateTask(updateTask: Task){
-        val index = tasks.indexOfFirst { it.id == updateTask.id }
-        if (index != -1)
-            tasks[index] = updateTask
+    suspend fun updateTask(updateTask: Task){
+        client.from("Task").update(updateTask){
+            filter {
+                eq("Id", updateTask.id!!)
+            }
+        }
     }
 }

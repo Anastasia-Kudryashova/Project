@@ -39,7 +39,7 @@ fun EditDialog(
             elevation = CardDefaults.cardElevation(defaultElevation = 10.dp)
         ) {
             Column() {
-                Text("Добавить новую задачу?")
+                Text("Изменить задачу?")
 
                 OutlinedTextField(
                     value = title,

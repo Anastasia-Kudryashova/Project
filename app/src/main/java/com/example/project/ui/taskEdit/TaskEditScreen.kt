@@ -44,17 +44,17 @@ fun TaskEditScreen(
     }
     Scaffold(topBar = {
         TopAppBar(
-            { Text("Добавить новую задачу") }
+            { Text("Изменить задачу") }
         )
     }
     ) { paddingValues ->
 
         Column(modifier = Modifier.padding(paddingValues)) {
-            Text("Добавить новую задачу?")
+            Text("Изменить задачу?")
 
             OutlinedTextField(
                 value = title,
-                onValueChange = { title == it },
+                onValueChange = { title = it },
                 label = { Text("Название задачи") },
                 modifier = Modifier
                     .fillMaxWidth()

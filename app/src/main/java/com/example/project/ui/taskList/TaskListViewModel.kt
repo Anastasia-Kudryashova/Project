@@ -65,7 +65,7 @@ class TaskListViewModel(
     //удаление
     fun deleteTask(){
         viewModelScope.launch {
-            repository.deleteTask(_task.value!!.id)
+            repository.deleteTask(_task.value!!.id!!)
             loadTask()
             hideDeleteDialog()
         }

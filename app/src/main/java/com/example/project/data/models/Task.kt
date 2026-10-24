@@ -1,8 +1,16 @@
 package com.example.project.data.models
 
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class Task(
-    val  id: Int,
+    @SerialName("Id")
+    val  id: Int? = null,
+    @SerialName("Title")
     var title: String,
+    @SerialName("Text")
     var text: String,
-    var expended: Boolean
+    @Transient
+    var expended: Boolean = false
 )

@@ -73,7 +73,6 @@ fun TaskAddScreen(
                 TextButton(onClick = {
                     if (title.isNotBlank() and text.isNotBlank())
                         viewModel.addTask(Task(
-                            id = 0,
                             title = title,
                             text = text,
                             expended = false
