@@ -6,10 +6,13 @@ import com.example.project.data.models.Task
 import com.example.project.data.repository.TaskRepository
 import kotlinx.coroutines.launch
 
-class TaskAddViewModel(private val repository: TaskRepository
-) : ViewModel() {
+class TaskAddViewModel(
+    private val repository: TaskRepository
+): ViewModel() {
+
     fun addTask(newTask: Task){
-        viewModelScope.launch() {
-            repository.addTask(newTask)}
+        viewModelScope.launch {
+            repository.addTask(newTask)
+        }
     }
 }

@@ -1,5 +1,4 @@
-package com.example.project.ui.companents
-
+package com.example.project.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -19,18 +18,20 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import com.example.project.data.models.Task
 
 @Composable
-fun AddDialog(
-    onDismiss:() -> Unit,
-    onAddTask:(String, String) -> Unit
+fun EditDialog(
+    onDismiss:()-> Unit,
+    onUpdate:(Task)-> Unit,
+    updatedTask: Task
 ){
-    var title by remember { mutableStateOf("") }
-    var text by remember { mutableStateOf("") }
+    var title by remember { mutableStateOf(updatedTask.title) }
+    var text by remember { mutableStateOf(updatedTask.text) }
 
     Dialog(
         onDismissRequest = onDismiss
-    ){
+    ) {
         Card(
             modifier = Modifier
                 .fillMaxWidth()
@@ -42,37 +43,42 @@ fun AddDialog(
 
                 OutlinedTextField(
                     value = title,
-                    onValueChange = {title == it},
-                    label = {Text("Название задачи")},
+                    onValueChange = { title = it },
+                    label = { Text("Название задачи") },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 10.dp)
-
                 )
+
                 OutlinedTextField(
                     value = text,
-                    onValueChange = {text == it},
-                    label = {Text("Описание задачи")},
+                    onValueChange = { text = it },
+                    label = { Text("Описание задачи") },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 10.dp),
                     singleLine = false,
                     maxLines = 3
-
                 )
-
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 10.dp),
                     horizontalArrangement = Arrangement.Center
-                ){
+                ) {
                     TextButton(onClick = onDismiss) {
                         Text("Отмена")
                     }
                     TextButton(onClick = {
-                        if (title.isNotBlank() and text.isNotBlank())
-                            onAddTask(title, text)
+                        if(title.isNotBlank() and text.isNotBlank())
+                            onUpdate(
+                                Task(
+                                    id = updatedTask.id,
+                                    text = text,
+                                    title = title,
+                                    expanded = updatedTask.expanded
+                                )
+                            )
                     }) {
                         Text("Добавить")
                     }

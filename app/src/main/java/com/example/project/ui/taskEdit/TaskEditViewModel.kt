@@ -3,7 +3,6 @@ package com.example.project.ui.taskEdit
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.project.data.models.Task
 import com.example.project.data.repository.TaskRepository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,6 +13,7 @@ class TaskEditViewModel(
     savedStateHandle: SavedStateHandle,
     private val repository: TaskRepository
 ) : ViewModel() {
+
     private val taskId = savedStateHandle.get<String>("taskId")?.toIntOrNull() ?: 0
 
     private val _task = MutableStateFlow<Task?>(null)
@@ -23,19 +23,18 @@ class TaskEditViewModel(
         loadTask()
     }
 
-    fun loadTask(){
+    fun loadTask() {
         viewModelScope.launch {
             val loadedTask = repository.getTask(taskId)
-            if (loadedTask != null){
+            if (loadedTask != null) {
                 _task.value = loadedTask
             }
         }
     }
 
-    fun updateTask(newTask: Task){
+    fun updateTask(newTask: Task) {
         viewModelScope.launch {
             repository.updateTask(newTask)
         }
     }
-
 }

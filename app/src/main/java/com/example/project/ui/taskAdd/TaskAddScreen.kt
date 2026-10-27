@@ -3,7 +3,6 @@ package com.example.project.ui.taskAdd.TaskAddScreen
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -29,61 +28,61 @@ fun TaskAddScreen(
     navController: NavController,
     viewModel: TaskAddViewModel
 ) {
+
     var title by remember { mutableStateOf("") }
     var text by remember { mutableStateOf("") }
 
-    Scaffold(topBar = {
-        TopAppBar(
-            { Text("Добавить новую задачу") }
-        )
-    }
-        ){
-        paddingValues ->
-        Column (modifier = Modifier.padding(paddingValues)) {
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Добавить новую задачу") }
+            )
+        }
+    ) { paddingValues ->
+        Column(modifier = Modifier.padding(paddingValues)) {
             OutlinedTextField(
                 value = title,
-                onValueChange = {title = it},
-                label = {Text("Заголовок")},
+                onValueChange = { title = it },
+                label = { Text("Заголовок") },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(10.dp)
             )
-
             OutlinedTextField(
                 value = text,
-                onValueChange = {text = it},
-                label = {Text("Текст")},
+                onValueChange = { text = it },
+                label = { Text("Текст") },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(10.dp),
-                singleLine = true,
-                maxLines = 3
+                singleLine = true
             )
-
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 10.dp),
                 horizontalArrangement = Arrangement.Center
-            ){
-                TextButton(onClick = {navController.popBackStack()
+            ) {
+                TextButton(onClick = {
+                    navController.popBackStack()
                 }){
                     Text("Отмена")
                 }
                 TextButton(onClick = {
                     if (title.isNotBlank() and text.isNotBlank())
-                        viewModel.addTask(Task(
-                            title = title,
-                            text = text,
-                            expended = false
+                        viewModel.addTask(
+                            Task(
+                                title = title,
+                                text = text,
+                                expanded = false
+                            )
                         )
-                    )
                     navController.popBackStack()
                 }) {
                     Text("Добавить")
                 }
             }
         }
-    }
 
+    }
 }

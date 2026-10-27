@@ -10,10 +10,11 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class TaskListViewModel(
-    private val repository: TaskRepository = TaskRepository()
+    private val repository : TaskRepository = TaskRepository()
 ) : ViewModel() {
+
     private val _tasks = MutableStateFlow<List<Task>>(emptyList())
-    val tasks : StateFlow<List<Task>> = _tasks
+    val tasks : StateFlow<List<Task>> =_tasks
 
     private val _task = MutableStateFlow<Task?>(null)
     val task : StateFlow<Task?> = _task
@@ -31,38 +32,33 @@ class TaskListViewModel(
         loadTask()
     }
 
-    fun switchExpend(switchedTask: Task) {
+    fun switchExpend(switchedTask: Task){
         _tasks.update { tasks ->
             tasks.map {
-                if (it.id == switchedTask.id)
-                    it.copy(expended = !it.expended)
+                if(it.id == switchedTask.id)
+                    it.copy(expanded = !it.expanded)
                 else it
             }
         }
     }
 
-    //загрузка
     fun loadTask(){
         viewModelScope.launch {
             _tasks.value = repository.getAllTasks()
         }
     }
 
-    //создание новой
-    fun addTask(newTask: Task) {
+    fun addTask(newTask:Task){
         viewModelScope.launch {
             repository.addTask(newTask)
             loadTask()
             hideAddDialog()
         }
     }
-
-    //получение
-    fun SelectTask(task: Task){
+    fun selectTask(task:Task){
         _task.value = task
     }
 
-    //удаление
     fun deleteTask(){
         viewModelScope.launch {
             repository.deleteTask(_task.value!!.id!!)
@@ -70,7 +66,6 @@ class TaskListViewModel(
             hideDeleteDialog()
         }
     }
-
     fun updateTask(newTask: Task){
         viewModelScope.launch {
             repository.updateTask(newTask)
@@ -78,7 +73,6 @@ class TaskListViewModel(
             hideUpdateDialog()
         }
     }
-
     fun showAddDialog(){
         _showAddDialog.value = true
     }
@@ -98,5 +92,6 @@ class TaskListViewModel(
     fun hideUpdateDialog(){
         _showUpdateDialog.value = false
     }
+
 
 }

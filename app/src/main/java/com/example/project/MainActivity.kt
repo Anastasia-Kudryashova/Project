@@ -4,10 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.viewModels
 import com.example.project.ui.navigation.AppNavigation
-import com.example.project.ui.taskList.TaskListScreen
-import com.example.project.ui.taskList.TaskListViewModel
 import com.example.project.ui.theme.ProjectTheme
 
 class MainActivity : ComponentActivity() {

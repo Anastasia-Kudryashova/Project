@@ -31,10 +31,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.project.data.models.Task
-import com.example.project.ui.companents.AddDialog
-import com.example.project.ui.companents.DeleteDialog
-import com.example.project.ui.companents.EditDialog
+import com.example.project.ui.components.DeleteDialog
 
 @Composable
 fun TaskListScreen(
@@ -46,8 +43,10 @@ fun TaskListScreen(
 
     Scaffold(
         floatingActionButton = {
-            FloatingActionButton(onClick = { navController.navigate("TaskAdd") }) {
-                Icon(Icons.Default.Add, contentDescription = "Add")
+            FloatingActionButton(onClick = {
+                navController.navigate("TaskAdd")
+            }) {
+                Icon(Icons.Default.Add, contentDescription = "add")
             }
         }
     ) { ip ->
@@ -56,8 +55,7 @@ fun TaskListScreen(
                 .padding(ip)
                 .padding(12.dp)
                 .fillMaxSize()
-        )
-        {
+        ) {
             items(items = tasks) { it ->
                 ElevatedCard(
                     modifier = Modifier
@@ -85,7 +83,7 @@ fun TaskListScreen(
                                 IconButton(
                                     onClick = {
                                         viewModel.showDeleteDialog()
-                                        viewModel.SelectTask(it)
+                                        viewModel.selectTask(it)
                                     }
                                 ) {
                                     Icon(Icons.Filled.Delete, contentDescription = "Delete")
@@ -99,8 +97,9 @@ fun TaskListScreen(
                                 }
                             }
                         }
+
                         AnimatedVisibility(
-                            visible = it.expended,
+                            visible = it.expanded,
                             enter = fadeIn() + expandVertically(),
                             exit = fadeOut() + shrinkVertically()
                         ) {
@@ -111,7 +110,6 @@ fun TaskListScreen(
                                 text = it.text
                             )
                         }
-
                     }
                 }
             }

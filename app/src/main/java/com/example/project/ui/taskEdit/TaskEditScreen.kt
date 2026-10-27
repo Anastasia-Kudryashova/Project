@@ -23,14 +23,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.project.data.models.Task
-import com.example.project.ui.taskAdd.TaskAddViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TaskEditScreen(
     navController: NavController,
     viewModel: TaskEditViewModel
-) {
+){
     val task by viewModel.task.collectAsState()
 
     var title by remember { mutableStateOf("") }
@@ -42,15 +41,16 @@ fun TaskEditScreen(
             title = it.title
         }
     }
-    Scaffold(topBar = {
-        TopAppBar(
-            { Text("Изменить задачу") }
-        )
-    }
-    ) { paddingValues ->
 
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Добавить новую задачу") }
+            )
+        }
+    ) { paddingValues ->
         Column(modifier = Modifier.padding(paddingValues)) {
-            Text("Изменить задачу?")
+            Text("Добавить новую задачу?")
 
             OutlinedTextField(
                 value = title,
@@ -59,37 +59,34 @@ fun TaskEditScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 10.dp)
-
             )
+
             OutlinedTextField(
                 value = text,
                 onValueChange = { text = it },
-                label = { Text("Текст") },
+                label = { Text("Описание задачи") },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(10.dp),
-                singleLine = true,
-                maxLines = 3
-
+                    .padding(top = 10.dp),
+                singleLine = false
             )
-
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 10.dp),
                 horizontalArrangement = Arrangement.Center
             ) {
-                TextButton(onClick = { navController.popBackStack() }) {
+                TextButton(onClick = {navController.popBackStack()}) {
                     Text("Отмена")
                 }
                 TextButton(onClick = {
-                    if (title.isNotBlank() and text.isNotBlank())
+                    if(title.isNotBlank() and text.isNotBlank())
                         viewModel.updateTask(
                             Task(
                                 id = task!!.id,
                                 text = text,
                                 title = title,
-                                expended = false
+                                expanded = false
                             )
                         )
                     navController.popBackStack()
@@ -99,4 +96,5 @@ fun TaskEditScreen(
             }
         }
     }
+
 }
